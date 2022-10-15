@@ -83,6 +83,7 @@ export class AppService {
   createTodo(todo: Todo): Todo {
     const id = uuidv4();
     todo.id = id;
+    todo.status = 'none';
     todo.created = new Date();
     todo.updated = new Date();
     this.todos.push(todo);
@@ -103,6 +104,6 @@ export class AppService {
 
   deleteTodo(id): void {
     this.getTodo(id); // if not exist return 404
-    this.todos = this.todos.filter((item) => item !== id);
+    this.todos = this.todos.filter((item) => item.id !== id);
   }
 }
