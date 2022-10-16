@@ -1,0 +1,35 @@
+<ng-container *ngIf="dataLoading; else listToShow">
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</ng-container>
+
+<ng-template #listToShow>
+  <div class="mb-2">
+    <button
+      type="button"
+      class="btn btn-primary border-0"
+      aria-label="Add TODO"
+      title="Add TODO"
+    >
+      <span aria-hidden="true" class="bi bi-plus"></span>Add todo
+    </button>
+  </div>
+  <ng-container *ngIf="todos?.length; else emptyResult">
+    <ng-container *ngFor="let todo of todos">
+      <div class="mb-1">
+        <app-todo
+          [todo]="todo"
+          (changeStateTodo)="onChangeStateTodo($event)"
+          (deleteTodo)="onDeleteTodo($event)"
+          (duplicateTodo)="onDuplicateTodo($event)"
+          (editTodo)="onEditTodo($event)"
+        ></app-todo>
+      </div>
+    </ng-container>
+  </ng-container>
+</ng-template>
+
+<ng-template #emptyResult>
+  <p>No items to show</p>
+</ng-template>

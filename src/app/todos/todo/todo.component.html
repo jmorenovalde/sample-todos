@@ -1,0 +1,80 @@
+<div
+  class="card"
+  *ngIf="todo"
+  [ngClass]="{ 'border-danger': isDue, 'border-success': isDone }"
+>
+  <div class="card-body position-relative">
+    <div class="position-absolute top-0 end-0">
+      <button
+        *ngIf="!isDone"
+        type="button"
+        class="btn btn-outline-primary btn-sm border-0"
+        aria-label="Change status"
+        title="Change status"
+        (click)="onClickChangeStatus()"
+      >
+        <span
+          *ngIf="todo.status === 'none'"
+          aria-hidden="true"
+          class="bi bi-circle"
+        ></span>
+        <span
+          *ngIf="todo.status === 'started'"
+          aria-hidden="true"
+          class="bi bi-play-circle"
+        ></span>
+      </button>
+      <div class="pt-1 me-2">
+        <span
+          *ngIf="isDone"
+          aria-hidden="true"
+          class="bi bi-check-circle text-success"
+          title="Todo done"
+        ></span>
+      </div>
+    </div>
+    <h5 class="card-title">{{ todo.title }}</h5>
+    <p>{{ todo.body }}</p>
+  </div>
+  <div class="card-footer d-flex justify-content-between">
+    <div>
+      <span
+        class="samll text-secondary"
+        *ngIf="todo.dueDate"
+        [ngClass]="{ 'text-danger': isDue }"
+        >{{ todo.dueDate | date: "YYYY-MM-dd" }}</span
+      >
+    </div>
+    <div class="d-flex justify-content-end">
+      <button
+        aria-label="Duplicate TODO item"
+        class="btn btn-outline-primary btn-sm ms-1 border-0"
+        [disabled]="todo.status !== 'none'"
+        title="Duplicate TODO item"
+        type="button"
+        (click)="onClickDuplicate()"
+      >
+        <span aria-hidden="true" class="bi bi-files"></span>
+      </button>
+      <button
+        aria-label="Edit TODO information"
+        class="btn btn-outline-primary btn-sm ms-1 border-0"
+        [disabled]="todo.status !== 'none'"
+        type="button"
+        title="Edit TODO information"
+        (click)="onClickEdit()"
+      >
+        <span aria-hidden="true" class="bi bi-pencil-fill"></span>
+      </button>
+      <button
+        type="button"
+        class="btn btn-outline-danger btn-sm ms-1 border-0"
+        aria-label="Delete TODO item"
+        title="Delete TODO item"
+        (click)="onClickDelete()"
+      >
+        <span aria-hidden="true" class="bi bi-trash-fill"></span>
+      </button>
+    </div>
+  </div>
+</div>

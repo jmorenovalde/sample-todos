@@ -16,20 +16,23 @@ export class AppService {
   );
   private todos: Todo[] = [
     {
-      title: 'third todo',
-      body: 'This is my third todo list item.',
+      title: 'one title',
+      body: 'one body.',
       status: 'started',
       id: '821b99f6-eecf-414a-afa7-e656f775cec2',
       created: new Date(
         new Date(this.todayDate).setDate(this.todayDate.getDate() - 5),
       ),
       updated: new Date(
-        new Date(this.todayDate).setDate(this.todayDate.getDate() + 2),
+        new Date(this.todayDate).setDate(this.todayDate.getDate() - 2),
+      ),
+      dueDate: new Date(
+        new Date(this.todayDate).setDate(this.todayDate.getDate() - 1),
       ),
     },
     {
-      title: 'one todo',
-      body: 'one',
+      title: 'two title',
+      body: 'two body',
       status: 'none',
       id: 'ab799f4b-5041-43cf-aae2-69cf228ba686',
       created: new Date(
@@ -38,8 +41,8 @@ export class AppService {
       updated: new Date(),
     },
     {
-      title: 'four todo',
-      body: 'four',
+      title: 'three title',
+      body: 'three body',
       status: 'done',
       id: 'eab65002-5446-4fcb-a170-9ac32b64b404',
       created: new Date(
@@ -50,8 +53,8 @@ export class AppService {
       ),
     },
     {
-      title: 'two todo',
-      body: 'two',
+      title: 'four title',
+      body: 'four body',
       status: 'none',
       id: '7ed03ff4-1c64-4586-b568-30d9876253da',
       created: new Date(

@@ -15,7 +15,7 @@ export class Todo {
     if (!this.dueDate) {
       return false;
     }
-    return (this.getToday().getTime() - this.dueDate.getTime()) < 0
+    return (new Date(this.dueDate).getTime() - this.getToday().getTime()) < 0
   }
 
   daysToDue(): number | null {
