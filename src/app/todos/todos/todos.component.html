@@ -16,54 +16,12 @@
       <span aria-hidden="true" class="bi bi-plus"></span>Add todo
     </button>
   </div>
-  <div class="form-todo card mb-2" *ngIf="showForm">
-    <div class="card-body">
-      <form [formGroup]="todoForm">
-        <div class="form-group">
-          <label for="formTitle">Title</label>
-          <input
-            class="form-control"
-            formControlName="todoTitle"
-            id="formTitle"
-            placeholder="Title of the todo"
-            type="text"
-          />
-          <div class="invalid-feedback">Provide a title.</div>
-        </div>
-        <div class="form-group">
-          <label for="formBody">Body</label>
-          <textarea
-            class="form-control"
-            id="formBody"
-            formControlName="todoBody"
-          ></textarea>
-          <div class="invalid-feedback">Provide a Body.</div>
-        </div>
-        <div class="form-group">
-          <label for="formDueDate">Due date</label>
-          <input
-            type="date"
-            class="form-control"
-            id="formDueDate"
-            formControlName="todoDueDate"
-          />
-          <div class="invalid-feedback">Provide a valid date.</div>
-        </div>
-      </form>
-      <div class="mt-2 d-flex justify-content-end">
-        <button
-          class="btn btn-primary me-1"
-          [disabled]="!canSaveTodo"
-          (click)="onSubmmit()"
-        >
-          Save
-        </button>
-        <button (click)="onCancelClick()" class="btn btn-secondary">
-          Cancel
-        </button>
-      </div>
-    </div>
-  </div>
+  <app-todo-form
+    *ngIf="showForm"
+    [todo]="todoSelected"
+    (cancel)="onCancelForm()"
+    (summit)="onSubmmit($event)"
+  ></app-todo-form>
   <ng-container *ngIf="todos?.length; else emptyResult">
     <ng-container *ngFor="let todo of todos">
       <div class="mb-1">
