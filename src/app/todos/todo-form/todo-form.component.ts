@@ -130,6 +130,12 @@ export class TodoFormComponent implements OnChanges, OnInit, OnDestroy {
       return undefined;
     }
     const newDueDate = new Date(date);
-    return `${newDueDate.getFullYear()}-${newDueDate.getMonth() + 1}-${newDueDate.getDate()}`;
+    return `${newDueDate.getFullYear()}-${this.addZeroToDate((newDueDate.getMonth() + 1).toString())
+      }-${this.addZeroToDate(newDueDate.getDate().toString())
+      }`;
+  }
+
+  private addZeroToDate(date: string): string {
+    return (('0' + date) as string).slice(-2);
   }
 }
