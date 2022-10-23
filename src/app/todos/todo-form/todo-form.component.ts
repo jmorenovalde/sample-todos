@@ -119,9 +119,17 @@ export class TodoFormComponent implements OnChanges, OnInit, OnDestroy {
       }
       this.todoForm.get('todoTitle')?.setValue(todo.title);
       this.todoForm.get('todoBody')?.setValue(todo.body);
-      this.todoForm.get('todoDueDate')?.setValue(todo.dueDate);
+      this.todoForm.get('todoDueDate')?.setValue(this.getDate(todo.dueDate));
     } else {
       this.clearForm();
     }
+  }
+
+  private getDate(date: Date | undefined): string | undefined {
+    if (!date) {
+      return undefined;
+    }
+    const newDueDate = new Date(date);
+    return `${newDueDate.getFullYear()}-${newDueDate.getMonth() + 1}-${newDueDate.getDate()}`;
   }
 }
