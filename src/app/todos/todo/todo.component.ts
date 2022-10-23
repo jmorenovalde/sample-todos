@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Todo } from '@core/models/todo.model';
+import { StatusPipe } from '@core/pipes/status.pipe';
 
 @Component({
   selector: 'app-todo',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, StatusPipe],
   templateUrl: './todo.component.html',
   styleUrls: ['./todo.component.scss']
 })

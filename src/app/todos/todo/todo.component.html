@@ -1,8 +1,4 @@
-<div
-  class="card"
-  *ngIf="todo"
-  [ngClass]="{ 'border-danger': isDue, 'border-success': isDone }"
->
+<div *ngIf="todo" class="card {{ todo | status }}">
   <div class="card-body position-relative">
     <div class="position-absolute top-0 end-0">
       <button
