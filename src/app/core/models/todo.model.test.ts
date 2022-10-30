@@ -87,8 +87,8 @@ describe('Todo', () => {
       object.title = 'Title Todo Test';
       object.body = 'Body Todo Test';
       object.status = 'none';
-      object.dueDate = getDateOffset(2);
-      expect(object.daysToDue()).toBe(2);
+      object.dueDate = getDateOffset(1);
+      expect(object.daysToDue()).toBe(1);
     });
   });
 });
