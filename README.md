@@ -1,27 +1,24 @@
 # SampleTodos
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.6.
+This project's a sample of works with TODOs.
 
-## Development server
+## Backend 
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+The backend is on the `local-server` directory and it's implemented on [NestJS](https://nestjs.com/). It's very simple and it's implemented without any database, the data is initialized at the start of the backend.
 
-## Code scaffolding
+To start the backend, you need to move to the `local-server` directory and run `npm install` or `npm i` and when the dependencies installation is finished run the `npm run start` command in a terminal.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
+## Frontend
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.6. and I use the components `standalalone` new feature.
 
-## Running unit tests
+To run the project, first, we need to install the dependencies, `npm install` and run the project when this is finished `npm run start`. It's very important to run each project in a console.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Structure of the project.
 
-## Running end-to-end tests
+The project is separated on two directories:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+* __core__: the general clases.
+* __todos__: the components to make the todo list.
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
