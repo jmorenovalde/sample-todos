@@ -99,7 +99,7 @@ export class TodosComponent implements OnInit, OnDestroy {
     if (this.todos?.length && this.todos[0].id) {
       this.todoService.getTodo(this.todos[0].id)
         .subscribe({
-          next: (todo) => this.todoSelected = todo,
+          next: (todo) => this.todoSelected = Object.assign(new Todo(), todo),
         });
     }
   }

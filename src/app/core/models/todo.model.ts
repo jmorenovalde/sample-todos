@@ -1,11 +1,14 @@
-export class Todo {
-  id?: string;
+import { TodoDbo } from './todo.dbo';
+
+export class Todo implements TodoDbo {
+  id?: string | undefined;
   title!: string;
   body!: string;
-  status?: 'none' | 'started' | 'done';
-  created?: Date;
-  updated?: Date;
-  dueDate?: Date;
+  status?: 'done' | 'none' | 'started' | undefined;
+  created?: Date | undefined;
+  updated?: Date | undefined;
+  dueDate?: Date | undefined;
+
 
   isDone(): boolean {
     return this.status === 'done';
@@ -43,6 +46,7 @@ export class Todo {
   }
 
   private msToDays(ms: number): number {
-    return ms * 1000 * 60 * 60 * 24;
+    const msOnADay = 1000 * 60 * 60 * 24;
+    return Math.floor(ms / msOnADay);
   }
 }

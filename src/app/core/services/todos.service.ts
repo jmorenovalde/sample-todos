@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { Todo } from '../models/todo.model';
 import { map } from 'rxjs';
+import { TodoDbo } from '@core/models/todo.dbo';
 
 @Injectable({
   providedIn: 'root'
@@ -19,15 +20,14 @@ export class TodosService {
       .pipe(map((items) => items.map(item => Object.assign(new Todo(), { ...item }))));
   }
 
-  getTodo(id: string): Observable<Todo> {
+  getTodo(id: string): Observable<TodoDbo> {
     if (!id || id === '') {
       throw new Error('Required parameter `id` was null or undefined when calling `getTodo`.');
     }
-    return this.http.get<Todo>(`${this.url}/${id}`)
-      .pipe(map(todo => Object.assign(new Todo(), { ...todo })));
+    return this.http.get<Todo>(`${this.url}/${id}`);
   }
 
-  createTodo(todo: Todo): Observable<Todo> {
+  createTodo(todo: TodoDbo): Observable<Todo> {
     const { title, body } = todo;
     if (!title || title === '') {
       throw new Error('Required parameter `title` was null or undefined when calling `createTodo`.');
@@ -39,7 +39,7 @@ export class TodosService {
       .pipe(map(todo => Object.assign(new Todo(), { ...todo })));
   }
 
-  updateTodo(todo: Todo): Observable<Todo> {
+  updateTodo(todo: TodoDbo): Observable<Todo> {
     const { id, title, body, status } = todo;
     if (!id || id === '') {
       throw new Error('Required parameter `id` was null or undefined when calling `updateTodo`.');
