@@ -21,3 +21,27 @@ The project is separated on two directories:
 
 * __core__: the general clases.
 * __todos__: the components to make the todo list.
+
+## Test
+
+In this branch we implemented the unit test for this sample project.
+
+To implement th test I used Jest a test runnes istead Karma and Jasmine. To intall it I used the schematic cretead by [briebug](https://github.com/briebug/jest-schematic).
+
+```bash
+ng add @briebug/jest-schematic
+```
+
+To runs test we need to open a new terminal and type:
+
+```bash
+npm run test
+```
+
+or 
+
+```bash
+npm run test:dev
+```
+
+The second option is while we are _developing_, becasue lanch with `watch` and `coverage` flags.
