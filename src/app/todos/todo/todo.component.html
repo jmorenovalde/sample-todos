@@ -3,10 +3,11 @@
     <div class="position-absolute top-0 end-0">
       <button
         *ngIf="!isDone"
-        type="button"
-        class="btn btn-outline-primary btn-sm border-0"
         aria-label="Change status"
+        class="btn btn-outline-primary btn-sm border-0"
+        data-test-id="button-status"
         title="Change status"
+        type="button"
         (click)="onClickChangeStatus()"
       >
         <span
@@ -45,6 +46,7 @@
       <button
         aria-label="Duplicate TODO item"
         class="btn btn-outline-primary btn-sm ms-1 border-0"
+        data-test-id="button-duplicate"
         [disabled]="todo.status !== 'none'"
         title="Duplicate TODO item"
         type="button"
@@ -55,6 +57,7 @@
       <button
         aria-label="Edit TODO information"
         class="btn btn-outline-primary btn-sm ms-1 border-0"
+        data-test-id="button-edit"
         [disabled]="todo.status !== 'none'"
         type="button"
         title="Edit TODO information"
@@ -63,9 +66,10 @@
         <span aria-hidden="true" class="bi bi-pencil-fill"></span>
       </button>
       <button
-        type="button"
-        class="btn btn-outline-danger btn-sm ms-1 border-0"
         aria-label="Delete TODO item"
+        class="btn btn-outline-danger btn-sm ms-1 border-0"
+        data-test-id="button-delete"
+        type="button"
         title="Delete TODO item"
         (click)="onClickDelete()"
       >

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Todo } from '@core/models/todo.model';
+import { Todo } from '../../core/models/todo.model';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 

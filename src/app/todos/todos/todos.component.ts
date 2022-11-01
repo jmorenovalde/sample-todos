@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Todo } from '../../core/models/todo.model';
-import { TodoComponent } from '../todo/todo.component';
-import { TodosService } from '@core/services/todos.service';
 import { Subject, takeUntil } from 'rxjs';
+import { Todo } from '../../core/models/todo.model';
+import { TodosService } from '../../core/services/todos.service';
+import { TodoComponent } from '../todo/todo.component';
 import { TodoFormComponent } from '../todo-form/todo-form.component';
 
 @Component({
