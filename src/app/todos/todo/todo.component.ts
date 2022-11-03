@@ -29,6 +29,10 @@ export class TodoComponent implements OnChanges {
   isDue = false;
   isDone = false;
 
+  /**
+   * @ignore
+   * Component lifecycle that runs when the component changes its inputs.
+   */
   ngOnChanges(changes: SimpleChanges): void {
     const { todo } = changes;
     if (todo?.currentValue) {
@@ -38,18 +42,30 @@ export class TodoComponent implements OnChanges {
     }
   }
 
+  /**
+   * This method returns the `editTodo` output when is called.
+   */
   onClickEdit(): void {
     this.editTodo.next(this.todo);
   }
 
+  /**
+   * This method returns the `duplicateTodo` output when is called.
+   */
   onClickDuplicate(): void {
     this.duplicateTodo.next(this.todo);
   }
 
+  /**
+   * This method returns the `deleteTodo` output when is called.
+   */
   onClickDelete(): void {
     this.deleteTodo.next(this.todo.id as string);
   }
 
+  /**
+   * This method returns the `changeStateTodo` output when is called.
+   */
   onClickChangeStatus(): void {
     this.changeStateTodo.next(this.todo);
   }

@@ -19,6 +19,7 @@ To run the project, first, we need to install the dependencies, `npm install` an
 
 The project is separated on two directories:
 
-* __core__: the general clases.
+* __core__: the general classes.
 * __todos__: the components to make the todo list.
 
+To see all tests move to [unit-test branch](https://github.com/jmorenovalde/sample-todos/tree/unit-test).

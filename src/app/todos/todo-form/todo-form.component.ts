@@ -21,7 +21,7 @@ export class TodoFormComponent implements OnChanges, OnInit, OnDestroy {
   todoForm!: FormGroup;
 
   /**
-   * This varible is used to unsuscribe the subscriptions on the ngOnDestroy method.
+   * This variable is used to unsubscribe the subscriptions on the ngOnDestroy method.
    */
   private unsubscribe$: Subject<void> = new Subject<void>();
 
@@ -57,7 +57,10 @@ export class TodoFormComponent implements OnChanges, OnInit, OnDestroy {
 
   //#endregion
 
-  onSubmmit(): void {
+  /**
+   * this method, check the values and send the `submit` event when is called.
+   */
+  onSubmit(): void {
     if (this.todoForm.valid) {
       const id = this.todoForm.get('todoId')?.value
       const title = this.todoForm.get('todoTitle')?.value;
@@ -77,16 +80,25 @@ export class TodoFormComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
+  /**
+   * This method emit the `cancel` output and clear the todo item selected.
+   */
   onCancelClick(): void {
     this.clearForm();
     this.cancel.emit();
   }
 
+  /**
+   * This method clear the form value and clear the todo item selected.
+   */
   private clearForm(): void {
     this.todo = null;
     this.todoForm.reset();
   }
 
+  /**
+   * This method init the form and create a observable to get the data form changes.
+   */
   private initForm() {
     if (this.todoForm) {
       return;
@@ -105,10 +117,17 @@ export class TodoFormComponent implements OnChanges, OnInit, OnDestroy {
       });
   }
 
+  /**
+   * This method check if has the mandatory values to available the save button.
+   */
   private checkForm() {
     this.canSaveTodo = this.todoForm.valid;
   }
 
+  /**
+   * Init the values of the form with the Todo item passed as parameter.
+   * @param todo item to set values to the form.
+   */
   private initTodo(todo: Todo): void {
     if (!this.todoForm) {
       this.initForm();
@@ -125,6 +144,11 @@ export class TodoFormComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
+  /**
+   * This method return a string with the date as input type="date" is required.
+   * @param date the date to get the string.
+   * @returns string to result. If returned `undefined` means that date is null or undefined.
+   */
   private getDate(date: Date | undefined): string | undefined {
     if (!date) {
       return undefined;
@@ -135,6 +159,11 @@ export class TodoFormComponent implements OnChanges, OnInit, OnDestroy {
       }`;
   }
 
+  /**
+   * This method add 0 before a number is this only has one character.
+   * @param data number to set a 0 before.
+   * @returns 0X or YX.
+   */
   private addZeroToDate(date: string): string {
     return (('0' + date) as string).slice(-2);
   }
