@@ -15,7 +15,6 @@ import { TodosComponent } from './todos/todos/todos.component';
     HttpClientModule,
     TodosComponent,
   ],
-  providers: [TodosService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

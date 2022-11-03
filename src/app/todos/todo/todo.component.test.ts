@@ -2,7 +2,7 @@ import { DebugElement, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TodoComponent } from './todo.component';
 import { StatusPipe } from '../../core/pipes/status.pipe';
-import { click, getDateOffset } from '../../core/utils';
+import { click, getDateOffset } from '../../core/utils-tests';
 import { Todo } from '../../core/models/todo.model';
 import { By } from '@angular/platform-browser';
 
@@ -49,7 +49,7 @@ describe('TodoComponent', () => {
         const statusButton = el.query(By.css('[data-test-id="button-status"]'));
         expect(statusButton).toBeTruthy();
 
-        const dueDate = el.query(By.css('.samll.text-secondary'));
+        const dueDate = el.query(By.css('.small.text-secondary'));
         expect(dueDate).toBeFalsy();
 
         const duplicateButton = el.query(By.css('[data-test-id="button-duplicate"]'));
@@ -75,7 +75,7 @@ describe('TodoComponent', () => {
         const statusButton = el.query(By.css('[data-test-id="button-status"]'));
         expect(statusButton).toBeTruthy();
 
-        const dueDate = el.query(By.css('.samll.text-secondary'));
+        const dueDate = el.query(By.css('.small.text-secondary'));
         expect(dueDate).toBeTruthy();
 
         const duplicateButton = el.query(By.css('[data-test-id="button-duplicate"]'));
@@ -101,7 +101,7 @@ describe('TodoComponent', () => {
         const statusButton = el.query(By.css('[data-test-id="button-status"]'));
         expect(statusButton).toBeTruthy();
 
-        const dueDate = el.query(By.css('.samll.text-danger'));
+        const dueDate = el.query(By.css('.small.text-danger'));
         expect(dueDate).toBeTruthy();
 
         const duplicateButton = el.query(By.css('[data-test-id="button-duplicate"]'));
@@ -133,7 +133,7 @@ describe('TodoComponent', () => {
         const statusButton = el.query(By.css('[data-test-id="button-status"]'));
         expect(statusButton).toBeTruthy();
 
-        const dueDate = el.query(By.css('.samll.text-secondary'));
+        const dueDate = el.query(By.css('.small.text-secondary'));
         expect(dueDate).toBeFalsy();
 
         const duplicateButton = el.query(By.css('[data-test-id="button-duplicate"]'));
@@ -169,7 +169,7 @@ describe('TodoComponent', () => {
         const statusButton = el.query(By.css('[data-test-id="button-status"]'));
         expect(statusButton).toBeTruthy();
 
-        const dueDate = el.query(By.css('.samll.text-secondary'));
+        const dueDate = el.query(By.css('.small.text-secondary'));
         expect(dueDate).toBeTruthy();
       });
 
@@ -190,7 +190,7 @@ describe('TodoComponent', () => {
         const statusButton = el.query(By.css('[data-test-id="button-status"]'));
         expect(statusButton).toBeTruthy();
 
-        const dueDate = el.query(By.css('.samll.text-danger'));
+        const dueDate = el.query(By.css('.small.text-danger'));
         expect(dueDate).toBeTruthy();
       });
     });
@@ -217,7 +217,7 @@ describe('TodoComponent', () => {
         const doneIcon = el.query(By.css('.bi.bi-check-circle.text-success'));
         expect(doneIcon).toBeTruthy();
 
-        const dueDate = el.query(By.css('.samll.text-secondary'));
+        const dueDate = el.query(By.css('.small.text-secondary'));
         expect(dueDate).toBeFalsy();
 
         const duplicateButton = el.query(By.css('[data-test-id="button-duplicate"]'));
@@ -256,7 +256,7 @@ describe('TodoComponent', () => {
         const doneIcon = el.query(By.css('.bi.bi-check-circle.text-success'));
         expect(doneIcon).toBeTruthy();
 
-        const dueDate = el.query(By.css('.samll.text-secondary'));
+        const dueDate = el.query(By.css('.small.text-secondary'));
         expect(dueDate).toBeTruthy();
       });
 
@@ -280,7 +280,7 @@ describe('TodoComponent', () => {
         const doneIcon = el.query(By.css('.bi.bi-check-circle.text-success'));
         expect(doneIcon).toBeTruthy();
 
-        const dueDate = el.query(By.css('.samll.text-secondary'));
+        const dueDate = el.query(By.css('.small.text-secondary'));
         expect(dueDate).toBeTruthy();
       });
     });

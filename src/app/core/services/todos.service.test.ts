@@ -3,7 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 
 import { TodosService } from './todos.service';
 import { Todo } from '../models/todo.model';
-import { getDateOffset } from '../utils';
+import { getDateOffset } from '../utils-tests';
 import { HttpErrorResponse } from '@angular/common/http';
 
 describe('TodosService', () => {
@@ -87,7 +87,7 @@ describe('TodosService', () => {
       expect(() => service.getTodo('')).toThrow();
     });
 
-    it('call the method with id is `null` or `undefinded`, return an error from the method', () => {
+    it('call the method with id is `null` or `undefined`, return an error from the method', () => {
       let idNew: string;
       expect(() => service.getTodo(idNew)).toThrow();
     });
@@ -228,7 +228,6 @@ describe('TodosService', () => {
   });
 
   it('call the method with id is an empty string, return an error from the method', () => {
-    const todo = new Todo();
     expect(() => service.deleteTodo('')).toThrow();
   });
 

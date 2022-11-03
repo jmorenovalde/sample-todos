@@ -1,4 +1,4 @@
-import { getDateOffset } from '../utils';
+import { getDateOffset } from '../utils-tests';
 import { Todo } from './todo.model';
 
 describe('Todo', () => {

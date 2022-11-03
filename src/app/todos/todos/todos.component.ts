@@ -10,6 +10,7 @@ import { TodoFormComponent } from '../todo-form/todo-form.component';
   selector: 'app-todos',
   standalone: true,
   imports: [CommonModule, TodoComponent, TodoFormComponent],
+  providers: [TodosService],
   templateUrl: './todos.component.html',
   styleUrls: ['./todos.component.scss']
 })
@@ -22,7 +23,7 @@ export class TodosComponent implements OnInit, OnDestroy {
   showForm = false;
 
   /**
-   * This varible is used to unsuscribe the subscriptions on the ngOnDestroy method.
+   * This variable is used to unsubscribe the subscriptions on the ngOnDestroy method.
    */
   private unsubscribe$: Subject<void> = new Subject<void>();
 
@@ -89,11 +90,11 @@ export class TodosComponent implements OnInit, OnDestroy {
 
   /**
    * This method delete the todo that has the id that it is passed by parameter.
-   * @param todoId the Todo Id to delte.
+   * @param todoId the Todo Id to delete.
    */
-  onDeleteTodo(todoId: string): void {
+  onDeleteTodo(todoId: string | undefined | null): void {
     // TODO: open a confirmation windows.
-    if (todoId) {
+    if (todoId && todoId.length) {
       this.todoService.deleteTodo(todoId)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe({
@@ -109,11 +110,13 @@ export class TodosComponent implements OnInit, OnDestroy {
    * This method is called when TodoFromComponent fired the submit event. This method add or edit a todo.
    * @param todo the element that is modified on the TodoFromComponent.
    */
-  onSubmit(todo: Todo) {
-    if (todo?.id) {
-      this.updateTodo(todo);
-    } else {
-      this.createTodo(todo);
+  onSubmit(todo: Todo | null | undefined) {
+    if (todo) {
+      if (todo.id) {
+        this.updateTodo(todo);
+      } else {
+        this.createTodo(todo);
+      }
     }
   }
 

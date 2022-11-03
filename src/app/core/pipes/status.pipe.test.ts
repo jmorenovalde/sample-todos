@@ -1,6 +1,6 @@
 import { StatusPipe } from './status.pipe';
 import { Todo } from '../models/todo.model';
-import { getDateOffset } from '../utils';
+import { getDateOffset } from '../utils-tests';
 
 describe('StatusPipe', () => {
 
@@ -9,7 +9,7 @@ describe('StatusPipe', () => {
     expect(pipe).toBeTruthy();
   });
 
-  it('shold return empty if todo is not done or is not overtime', () => {
+  it('should return empty if todo is not done or is not overtime', () => {
     const todo = new Todo();
     todo.title = 'Title test todo';
     todo.body = 'Title test todo';
@@ -21,7 +21,7 @@ describe('StatusPipe', () => {
     expect(value).toEqual('');
   });
 
-  it('shold return `border-success` if todo is done', () => {
+  it('should return `border-success` if todo is done', () => {
     const todo = new Todo();
     todo.title = 'Title test todo';
     todo.body = 'Title test todo';
@@ -33,7 +33,7 @@ describe('StatusPipe', () => {
     expect(value).toEqual('border-success');
   });
 
-  it('shold return `border-danger` if todo is overtime', () => {
+  it('should return `border-danger` if todo is overtime', () => {
     const todo = new Todo();
     todo.title = 'Title test todo';
     todo.body = 'Title test todo';
@@ -46,7 +46,7 @@ describe('StatusPipe', () => {
     expect(value).toEqual('border-danger');
   });
 
-  it('shold return `border-success` if todo is done and overtime', () => {
+  it('should return `border-success` if todo is done and overtime', () => {
     const todo = new Todo();
     todo.title = 'Title test todo';
     todo.body = 'Title test todo';

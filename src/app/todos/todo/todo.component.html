@@ -36,7 +36,7 @@
   <div class="card-footer d-flex justify-content-between">
     <div>
       <span
-        class="samll text-secondary"
+        class="small text-secondary"
         *ngIf="todo.dueDate"
         [ngClass]="{ 'text-danger': isDue }"
         >{{ todo.dueDate | date: "YYYY-MM-dd" }}</span

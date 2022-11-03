@@ -1,6 +1,6 @@
 import { DebugElement, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { click, getDateOffset, getDateString } from '../../core/utils';
+import { click, getDateOffset, getDateString } from '../../core/utils-tests';
 import { Todo } from '../../core/models/todo.model';
 import { TodoFormComponent } from './todo-form.component';
 import { By } from '@angular/platform-browser';
