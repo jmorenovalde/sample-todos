@@ -20,7 +20,7 @@
     *ngIf="showForm"
     [todo]="todoSelected"
     (cancel)="onCancelForm()"
-    (summit)="onSubmmit($event)"
+    (submit)="onSubmit($event)"
   ></app-todo-form>
   <ng-container *ngIf="todos?.length; else emptyResult">
     <ng-container *ngFor="let todo of todos">

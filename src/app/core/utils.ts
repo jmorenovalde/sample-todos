@@ -12,6 +12,18 @@ export function getDateOffset(offset: number): Date {
   return newDate;
 }
 
+export function getDateString(date: Date | undefined): string | undefined {
+  if (!date) {
+    return undefined;
+  }
+  const newDueDate = new Date(date);
+  return `${newDueDate.getFullYear()}-${addZeroToDate((newDueDate.getMonth() + 1).toString())}-${addZeroToDate(newDueDate.getDate().toString())}`;
+}
+
+function addZeroToDate(date: string): string {
+  return (('0' + date) as string).slice(-2);
+}
+
 export function click<T>(
   fixture: ComponentFixture<T>,
   testId: string
@@ -25,9 +37,6 @@ export function makeClickEvent(
   target: EventTarget
 ): Partial<MouseEvent> {
   return {
-    preventDefault(): void { },
-    stopPropagation(): void { },
-    stopImmediatePropagation(): void { },
     type: 'click',
     target,
     currentTarget: target,

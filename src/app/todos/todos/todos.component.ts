@@ -51,25 +51,31 @@ export class TodosComponent implements OnInit, OnDestroy {
   }
   //#endregion
 
+  /**
+   * Show the TodoFormComponent to edit a Todo element.
+   * @param todo to edit.
+   */
   onEditTodo(todo: Todo): void {
     this.initTodoForm(todo);
     this.showForm = true;
   }
 
+  /**
+   * Open the TodoFromComponent to duplicate a Todo element.
+   * @param todo element to duplicate.
+   */
   onDuplicateTodo(todo: Todo): void {
     this.initTodoForm(todo, true);
     this.showForm = true;
   }
 
-  private initTodoForm(todo: Todo, duplicate = false): void {
-    const newTodo = Object.assign(new Todo(), todo);
-    if (duplicate) {
-      newTodo.title = newTodo.title + ' [Duplicated]';
-      delete newTodo.id;
-    }
-    this.todoSelected = newTodo;
-  }
-
+  /**
+   * This method is called to change the state of the Todo. Always change moving as the following:
+   *  * none => started
+   *  * started => done
+   * Finally update the todo.
+   * @param todo the element to change the status.
+   */
   onChangeStateTodo(todo: Todo): void {
     if (todo) {
       if (todo.status === 'started') {
@@ -81,6 +87,10 @@ export class TodosComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * This method delete the todo that has the id that it is passed by parameter.
+   * @param todoId the Todo Id to delte.
+   */
   onDeleteTodo(todoId: string): void {
     // TODO: open a confirmation windows.
     if (todoId) {
@@ -95,15 +105,52 @@ export class TodosComponent implements OnInit, OnDestroy {
     }
   }
 
-  getTodo() {
-    if (this.todos?.length && this.todos[0].id) {
-      this.todoService.getTodo(this.todos[0].id)
-        .subscribe({
-          next: (todo) => this.todoSelected = Object.assign(new Todo(), todo),
-        });
+  /**
+   * This method is called when TodoFromComponent fired the submit event. This method add or edit a todo.
+   * @param todo the element that is modified on the TodoFromComponent.
+   */
+  onSubmit(todo: Todo) {
+    if (todo?.id) {
+      this.updateTodo(todo);
+    } else {
+      this.createTodo(todo);
     }
   }
 
+  /**
+   * This method is called when TodoFromComponent fired the submit event, and close the TodoFromComponent and
+   * clear the todoSelected todo.
+   */
+  onAddTodoClick(): void {
+    this.todoSelected = null;
+    this.showForm = true;
+  }
+
+  /**
+   * This method is called
+   */
+  onCancelForm(): void {
+    this.showForm = false;
+    this.todoSelected = null;
+  }
+
+  /**
+   * This method put on the todoSelected the Todo element to edit or duplicate.
+   * @param todo element to edit or duplicate.
+   * @param duplicate if we want to duplicate the todo element.
+   */
+  private initTodoForm(todo: Todo, duplicate = false): void {
+    const newTodo = Object.assign(new Todo(), todo);
+    if (duplicate) {
+      newTodo.title = newTodo.title + ' [Duplicated]';
+      delete newTodo.id;
+    }
+    this.todoSelected = newTodo;
+  }
+
+  /**
+   * This method call to the backend to get all todo elements (no pagination).
+   */
   private getTodos() {
     this.dataLoading = true;
     this.todoService.getTodos()
@@ -116,41 +163,35 @@ export class TodosComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onSubmmit(todo: Todo) {
-    if (todo?.id) {
-      this.updateTodo(todo);
-    } else {
-      this.createTodo(todo);
-    }
-  }
-
+  /**
+   * This method update the Todo that it is passed by param.
+   * @param todo element to update.
+   */
   private updateTodo(todo: Todo): void {
     this.todoService.updateTodo(todo)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (todo) => {
           this.showForm = false;
+          this.todoSelected = null;
           this.getTodos();
         }
       });
   }
 
+  /**
+   * This method create the Todo that it is passed by param.
+   * @param todo element to create.
+   */
   private createTodo(todo: Todo): void {
     this.todoService.createTodo(todo)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (todo) => {
           this.showForm = false;
+          this.todoSelected = null;
           this.getTodos();
         }
       });
-  }
-
-  onAddTodoClick(): void {
-    this.showForm = true;
-  }
-
-  onCancelForm(): void {
-    this.showForm = false;
   }
 }

@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, Output, EventEmitter, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Todo } from '../../core/models/todo.model';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Todo } from '../../core/models/todo.model';
 
 @Component({
   selector: 'app-todo-form',
@@ -15,7 +15,7 @@ export class TodoFormComponent implements OnChanges, OnInit, OnDestroy {
   @Input() todo: Todo | null = null;
 
   @Output() cancel = new EventEmitter<void>();
-  @Output() summit = new EventEmitter<Todo>();
+  @Output() submit = new EventEmitter<Todo>();
 
   canSaveTodo = false;
   todoForm!: FormGroup;
@@ -68,10 +68,10 @@ export class TodoFormComponent implements OnChanges, OnInit, OnDestroy {
         editTodo.title = title;
         editTodo.body = body;
         editTodo.dueDate = dueDate ? dueDate : undefined;
-        this.summit.next(editTodo);
+        this.submit.next(editTodo);
       } else {
         const newTodo = Object.assign(new Todo(), { title, body, dueDate });
-        this.summit.next(newTodo);
+        this.submit.next(newTodo);
       }
       this.clearForm();
     }
@@ -130,9 +130,7 @@ export class TodoFormComponent implements OnChanges, OnInit, OnDestroy {
       return undefined;
     }
     const newDueDate = new Date(date);
-    return `${newDueDate.getFullYear()}-${this.addZeroToDate((newDueDate.getMonth() + 1).toString())
-      }-${this.addZeroToDate(newDueDate.getDate().toString())
-      }`;
+    return `${newDueDate.getFullYear()}-${this.addZeroToDate((newDueDate.getMonth() + 1).toString())}-${this.addZeroToDate(newDueDate.getDate().toString())}`;
   }
 
   private addZeroToDate(date: string): string {
