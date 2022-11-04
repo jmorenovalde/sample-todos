@@ -225,10 +225,10 @@ describe('TodosService', () => {
       expect(req.request.method).toEqual('DELETE');
       req.flush('Internal Server Error', { status: 500, statusText: 'Internal Server Error' });
     });
-  });
 
-  it('call the method with id is an empty string, return an error from the method', () => {
-    expect(() => service.deleteTodo('')).toThrow();
+    it('call the method with id is an empty string, return an error from the method', () => {
+      expect(() => service.deleteTodo('')).toThrow();
+    });
   });
 
   afterEach(() => {
