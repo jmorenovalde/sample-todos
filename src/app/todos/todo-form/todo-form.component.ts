@@ -71,10 +71,10 @@ export class TodoFormComponent implements OnChanges, OnInit, OnDestroy {
         editTodo.title = title;
         editTodo.body = body;
         editTodo.dueDate = dueDate ? dueDate : undefined;
-        this.submit.next(editTodo);
+        this.submit.emit(editTodo);
       } else {
         const newTodo = Object.assign(new Todo(), { title, body, dueDate });
-        this.submit.next(newTodo);
+        this.submit.emit(newTodo);
       }
       this.clearForm();
     }
