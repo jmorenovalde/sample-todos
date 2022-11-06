@@ -1,334 +1,241 @@
-import { DebugElement, SimpleChange } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { render, screen, fireEvent } from '@testing-library/angular';
 import { TodoComponent } from './todo.component';
-import { StatusPipe } from '../../core/pipes/status.pipe';
-import { click, getDateOffset } from '../../core/utils-tests';
 import { Todo } from '../../core/models/todo.model';
-import { By } from '@angular/platform-browser';
+import { getDateOffset, getDateString } from '../../core/utils-tests';
 
 describe('TodoComponent', () => {
-  let component: TodoComponent;
-  let fixture: ComponentFixture<TodoComponent>;
-  let el: DebugElement;
-  let todo: Todo;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [StatusPipe],
-    }).compileComponents();
+  const todo = Object.assign(new Todo(), {
+    title: 'Test title',
+    body: 'Test body',
+    id: '123456',
+    created: getDateOffset(-3),
+    updated: getDateOffset(-2),
+    status: 'none',
   });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(TodoComponent);
-    component = fixture.componentInstance;
-    todo = Object.assign(new Todo(), {
-      title: 'Test title',
-      body: 'Test body',
-      id: '123456',
-      created: getDateOffset(-3),
-      updated: getDateOffset(-2),
-      status: 'none',
-    });
-    el = fixture.debugElement;
-    component.ngOnChanges({
-      todo: new SimpleChange(null, todo, true),
-    });
-    component.todo = todo;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  describe('Input Todo', () => {
-    describe('Todo status `none`', () => {
-      it('add a Todo without dueDate and is not done', () => {
-        expect(component.isDone).toBeFalsy();
-        expect(component.isDue).toBeFalsy();
-        const statusButton = el.query(By.css('[data-test-id="button-status"]'));
-        expect(statusButton).toBeTruthy();
-
-        const dueDate = el.query(By.css('.small.text-secondary'));
-        expect(dueDate).toBeFalsy();
-
-        const duplicateButton = el.query(By.css('[data-test-id="button-duplicate"]'));
-        expect(duplicateButton).toBeTruthy();
-
-        const editButton = el.query(By.css('[data-test-id="button-edit"]'));
-        expect(editButton).toBeTruthy();
-
-        const deleteButton = el.query(By.css('[data-test-id="button-delete"]'));
-        expect(deleteButton).toBeTruthy();
+  describe('Todo status is `none`', () => {
+    it('should render Todo', async () => {
+      const { container } = await render(TodoComponent, {
+        componentProperties: { todo },
       });
 
-      it('add a Todo with dueDate but is not overtime and is not done', () => {
-        const newTodo = Object.assign(new Todo(), { ...todo, dueDate: getDateOffset(3) });
-        component.ngOnChanges({
-          todo: new SimpleChange(todo, newTodo, false),
-        });
-        component.todo = newTodo;
-        fixture.detectChanges();
-        expect(component.isDone).toBeFalsy();
-        expect(component.isDue).toBeFalsy();
+      expect(screen.getByText('Test title')).toBeTruthy();
+      expect(screen.getByText('Test body')).toBeTruthy();
 
-        const statusButton = el.query(By.css('[data-test-id="button-status"]'));
-        expect(statusButton).toBeTruthy();
+      const cardDoneElement = container.querySelector('.card.border-success');
+      expect(cardDoneElement).toBeFalsy();
+      const cardOvertimeElement = container.querySelector('.card.border-danger');
+      expect(cardOvertimeElement).toBeFalsy();
 
-        const dueDate = el.query(By.css('.small.text-secondary'));
-        expect(dueDate).toBeTruthy();
-
-        const duplicateButton = el.query(By.css('[data-test-id="button-duplicate"]'));
-        expect(duplicateButton).toBeTruthy();
-
-        const editButton = el.query(By.css('[data-test-id="button-edit"]'));
-        expect(editButton).toBeTruthy();
-
-        const deleteButton = el.query(By.css('[data-test-id="button-delete"]'));
-        expect(deleteButton).toBeTruthy();
-      });
-
-      it('add a Todo with dueDate but is overtime and is not done', () => {
-        const newTodo = Object.assign(new Todo(), { ...todo, dueDate: getDateOffset(-1) });
-        component.ngOnChanges({
-          todo: new SimpleChange(todo, newTodo, false),
-        });
-        component.todo = newTodo;
-        fixture.detectChanges();
-        expect(component.isDone).toBeFalsy();
-        expect(component.isDue).toBeTruthy();
-
-        const statusButton = el.query(By.css('[data-test-id="button-status"]'));
-        expect(statusButton).toBeTruthy();
-
-        const dueDate = el.query(By.css('.small.text-danger'));
-        expect(dueDate).toBeTruthy();
-
-        const duplicateButton = el.query(By.css('[data-test-id="button-duplicate"]'));
-        expect(duplicateButton).toBeTruthy();
-
-        const editButton = el.query(By.css('[data-test-id="button-edit"]'));
-        expect(editButton).toBeTruthy();
-
-        const deleteButton = el.query(By.css('[data-test-id="button-delete"]'));
-        expect(deleteButton).toBeTruthy();
-      });
+      const duplicateButton = container.querySelector('[data-test-id="button-duplicate"]');
+      expect(duplicateButton).toBeTruthy();
+      expect(duplicateButton?.getAttribute('disabled')).toBe(null);
+      const editButton = container.querySelector('[data-test-id="button-edit"]');
+      expect(editButton).toBeTruthy();
+      expect(editButton?.getAttribute('disabled')).toBe(null);
+      const deleteButton = container.querySelector('[data-test-id="button-delete"]');
+      expect(deleteButton).toBeTruthy();
+      expect(deleteButton?.getAttribute('disabled')).toBe(null);
+      const statusButton = container.querySelector('[data-test-id="button-status"]');
+      expect(statusButton).toBeTruthy();
+      expect(statusButton?.getAttribute('disabled')).toBe(null);
     });
 
-    describe('Todo status `started`', () => {
-
-      it('add a Todo without dueDate and is not done', () => {
-        const newTodo = Object.assign(new Todo(), {
-          ...todo,
-          status: 'started',
-        });
-        component.ngOnChanges({
-          todo: new SimpleChange(todo, newTodo, false),
-        });
-        component.todo = newTodo;
-        fixture.detectChanges();
-
-        expect(component.isDone).toBeFalsy();
-        expect(component.isDue).toBeFalsy();
-        const statusButton = el.query(By.css('[data-test-id="button-status"]'));
-        expect(statusButton).toBeTruthy();
-
-        const dueDate = el.query(By.css('.small.text-secondary'));
-        expect(dueDate).toBeFalsy();
-
-        const duplicateButton = el.query(By.css('[data-test-id="button-duplicate"]'));
-        expect(duplicateButton).toBeTruthy();
-        const buttonDuplicate = duplicateButton.nativeElement as any;
-        expect(buttonDuplicate.disabled).toBeTruthy();
-
-        const editButton = el.query(By.css('[data-test-id="button-edit"]'));
-        expect(editButton).toBeTruthy();
-        const buttonEdit = editButton.nativeElement as any;
-        expect(buttonEdit.disabled).toBeTruthy();
-
-        const deleteButton = el.query(By.css('[data-test-id="button-delete"]'));
-        expect(deleteButton).toBeTruthy();
-        const buttonDelete = deleteButton.nativeElement as any;
-        expect(buttonDelete.disabled).toBeFalsy();
+    it('should show a overtime todo', async () => {
+      const dateOvertime = getDateOffset(-1);
+      const dateOvertimeText = getDateString(dateOvertime) as string;
+      const todoOvertime = Object.assign(new Todo(), { ...todo, dueDate: dateOvertime });
+      const { container } = await render(TodoComponent, {
+        componentProperties: { todo: todoOvertime },
       });
+      expect(screen.getByText(dateOvertimeText)).toBeTruthy();
+      const cardDoneElement = container.querySelector('.card.border-success');
+      expect(cardDoneElement).toBeFalsy();
+      const cardOvertimeElement = container.querySelector('.card.border-danger');
+      expect(cardOvertimeElement).toBeTruthy();
 
-      it('add a Todo with dueDate but is not overtime and is not done', () => {
-        const newTodo = Object.assign(new Todo(), {
-          ...todo,
-          dueDate: getDateOffset(3),
-          status: 'started',
-        });
-        component.ngOnChanges({
-          todo: new SimpleChange(todo, newTodo, false),
-        });
-        component.todo = newTodo;
-        fixture.detectChanges();
-        expect(component.isDone).toBeFalsy();
-        expect(component.isDue).toBeFalsy();
-
-        const statusButton = el.query(By.css('[data-test-id="button-status"]'));
-        expect(statusButton).toBeTruthy();
-
-        const dueDate = el.query(By.css('.small.text-secondary'));
-        expect(dueDate).toBeTruthy();
-      });
-
-      it('add a Todo with dueDate but is overtime and is not done', () => {
-        const newTodo = Object.assign(new Todo(), {
-          ...todo,
-          dueDate: getDateOffset(-1),
-          status: 'started',
-        });
-        component.ngOnChanges({
-          todo: new SimpleChange(todo, newTodo, false),
-        });
-        component.todo = newTodo;
-        fixture.detectChanges();
-        expect(component.isDone).toBeFalsy();
-        expect(component.isDue).toBeTruthy();
-
-        const statusButton = el.query(By.css('[data-test-id="button-status"]'));
-        expect(statusButton).toBeTruthy();
-
-        const dueDate = el.query(By.css('.small.text-danger'));
-        expect(dueDate).toBeTruthy();
-      });
-    });
-
-    describe('Todo status `done`', () => {
-
-      it('add a Todo without dueDate and is done', () => {
-        const newTodo = Object.assign(new Todo(), {
-          ...todo,
-          status: 'done',
-        });
-        component.ngOnChanges({
-          todo: new SimpleChange(todo, newTodo, false),
-        });
-        component.todo = newTodo;
-        fixture.detectChanges();
-
-        expect(component.isDone).toBeTruthy();
-        expect(component.isDue).toBeFalsy();
-
-        const statusButton = el.query(By.css('[data-test-id="button-status"]'));
-        expect(statusButton).toBeFalsy();
-
-        const doneIcon = el.query(By.css('.bi.bi-check-circle.text-success'));
-        expect(doneIcon).toBeTruthy();
-
-        const dueDate = el.query(By.css('.small.text-secondary'));
-        expect(dueDate).toBeFalsy();
-
-        const duplicateButton = el.query(By.css('[data-test-id="button-duplicate"]'));
-        expect(duplicateButton).toBeTruthy();
-        const buttonDuplicate = duplicateButton.nativeElement as any;
-        expect(buttonDuplicate.disabled).toBeTruthy();
-
-        const editButton = el.query(By.css('[data-test-id="button-edit"]'));
-        expect(editButton).toBeTruthy();
-        const buttonEdit = editButton.nativeElement as any;
-        expect(buttonEdit.disabled).toBeTruthy();
-
-        const deleteButton = el.query(By.css('[data-test-id="button-delete"]'));
-        expect(deleteButton).toBeTruthy();
-        const buttonDelete = deleteButton.nativeElement as any;
-        expect(buttonDelete.disabled).toBeFalsy();
-      });
-
-      it('add a Todo with dueDate but is not overtime and is done', () => {
-        const newTodo = Object.assign(new Todo(), {
-          ...todo,
-          dueDate: getDateOffset(3),
-          status: 'done',
-        });
-        component.ngOnChanges({
-          todo: new SimpleChange(todo, newTodo, false),
-        });
-        component.todo = newTodo;
-        fixture.detectChanges();
-        expect(component.isDone).toBeTruthy();
-        expect(component.isDue).toBeFalsy();
-
-        const statusButton = el.query(By.css('[data-test-id="button-status"]'));
-        expect(statusButton).toBeFalsy();
-
-        const doneIcon = el.query(By.css('.bi.bi-check-circle.text-success'));
-        expect(doneIcon).toBeTruthy();
-
-        const dueDate = el.query(By.css('.small.text-secondary'));
-        expect(dueDate).toBeTruthy();
-      });
-
-      it('add a Todo with dueDate but is overtime and is done', () => {
-        const newTodo = Object.assign(new Todo(), {
-          ...todo,
-          dueDate: getDateOffset(-1),
-          status: 'done',
-        });
-        component.ngOnChanges({
-          todo: new SimpleChange(todo, newTodo, false),
-        });
-        component.todo = newTodo;
-        fixture.detectChanges();
-        expect(component.isDone).toBeTruthy();
-        expect(component.isDue).toBeFalsy();
-
-        const statusButton = el.query(By.css('[data-test-id="button-status"]'));
-        expect(statusButton).toBeFalsy();
-
-        const doneIcon = el.query(By.css('.bi.bi-check-circle.text-success'));
-        expect(doneIcon).toBeTruthy();
-
-        const dueDate = el.query(By.css('.small.text-secondary'));
-        expect(dueDate).toBeTruthy();
-      });
+      const duplicateButton = container.querySelector('[data-test-id="button-duplicate"]');
+      expect(duplicateButton).toBeTruthy();
+      expect(duplicateButton?.getAttribute('disabled')).toBe(null);
+      const editButton = container.querySelector('[data-test-id="button-edit"]');
+      expect(editButton).toBeTruthy();
+      expect(editButton?.getAttribute('disabled')).toBe(null);
+      const deleteButton = container.querySelector('[data-test-id="button-delete"]');
+      expect(deleteButton).toBeTruthy();
+      expect(deleteButton?.getAttribute('disabled')).toBe(null);
+      const statusButton = container.querySelector('[data-test-id="button-status"]');
+      expect(statusButton).toBeTruthy();
+      expect(statusButton?.getAttribute('disabled')).toBe(null);
     });
   });
 
-  describe('Output Todo', () => {
-    it('emit Output `editTodo` when click on edit button', () => {
-      let called = false;
-      component.editTodo
-        .subscribe({
-          next: () => called = true,
-        });
+  describe('Todo status is `stared`', () => {
+    it('should show a started todo', async () => {
+      const todoStarted = Object.assign(new Todo(), { ...todo, status: 'started' });
+      const { container } = await render(TodoComponent, {
+        componentProperties: { todo: todoStarted },
+      });
+      const cardDoneElement = container.querySelector('.card.border-success');
+      expect(cardDoneElement).toBeFalsy();
+      const cardOvertimeElement = container.querySelector('.card.border-danger');
+      expect(cardOvertimeElement).toBeFalsy();
 
-      click(fixture, 'button-edit');
-      expect(called).toBeTruthy();
+      const duplicateButton = container.querySelector('[data-test-id="button-duplicate"]');
+      expect(duplicateButton).toBeTruthy();
+      expect(duplicateButton?.getAttribute('disabled')).toBe('');
+      const editButton = container.querySelector('[data-test-id="button-edit"]');
+      expect(editButton).toBeTruthy();
+      expect(editButton?.getAttribute('disabled')).toBe('');
+      const deleteButton = container.querySelector('[data-test-id="button-delete"]');
+      expect(deleteButton).toBeTruthy();
+      expect(deleteButton?.getAttribute('disabled')).toBe(null);
+      const statusButton = container.querySelector('[data-test-id="button-status"]');
+      expect(statusButton).toBeTruthy();
     });
 
-    it('emit Output `duplicateTodo` when click on duplicate button', () => {
-      let called = false;
-      component.duplicateTodo
-        .subscribe({
-          next: () => called = true,
-        });
+    it('should show a overtime todo', async () => {
+      const dateOvertime = getDateOffset(-1);
+      const dateOvertimeText = getDateString(dateOvertime) as string;
+      const todoOvertime = Object.assign(new Todo(), { ...todo, status: 'started', dueDate: dateOvertime });
+      const { container } = await render(TodoComponent, {
+        componentProperties: { todo: todoOvertime },
+      });
+      expect(screen.getByText(dateOvertimeText)).toBeTruthy();
+      const cardDoneElement = container.querySelector('.card.border-success');
+      expect(cardDoneElement).toBeFalsy();
+      const cardOvertimeElement = container.querySelector('.card.border-danger');
+      expect(cardOvertimeElement).toBeTruthy();
 
-      click(fixture, 'button-duplicate');
-      expect(called).toBeTruthy();
+      const duplicateButton = container.querySelector('[data-test-id="button-duplicate"]');
+      expect(duplicateButton).toBeTruthy();
+      expect(duplicateButton?.getAttribute('disabled')).toBe('');
+      const editButton = container.querySelector('[data-test-id="button-edit"]');
+      expect(editButton).toBeTruthy();
+      expect(editButton?.getAttribute('disabled')).toBe('');
+      const deleteButton = container.querySelector('[data-test-id="button-delete"]');
+      expect(deleteButton).toBeTruthy();
+      expect(deleteButton?.getAttribute('disabled')).toBe(null);
+      const statusButton = container.querySelector('[data-test-id="button-status"]');
+      expect(statusButton).toBeTruthy();
+    });
+  });
+
+  describe('Todo status is `done`', () => {
+    it('should show a done todo', async () => {
+      const todoDone = Object.assign(new Todo(), { ...todo, status: 'done' });
+      const { container } = await render(TodoComponent, {
+        componentProperties: { todo: todoDone },
+      });
+      const cardDoneElement = container.querySelector('.card.border-success');
+      expect(cardDoneElement).toBeTruthy();
+      const cardOvertimeElement = container.querySelector('.card.border-danger');
+      expect(cardOvertimeElement).toBeFalsy();
+
+      const duplicateButton = container.querySelector('[data-test-id="button-duplicate"]');
+      expect(duplicateButton).toBeTruthy();
+      expect(duplicateButton?.getAttribute('disabled')).toBe('');
+      const editButton = container.querySelector('[data-test-id="button-edit"]');
+      expect(editButton).toBeTruthy();
+      expect(editButton?.getAttribute('disabled')).toBe('');
+      const deleteButton = container.querySelector('[data-test-id="button-delete"]');
+      expect(deleteButton).toBeTruthy();
+      expect(deleteButton?.getAttribute('disabled')).toBe(null);
+      const statusButton = container.querySelector('[data-test-id="button-status"]');
+      expect(statusButton).toBeFalsy();
     });
 
-    it('emit Output `deleteTodo` when click on delete button', () => {
-      let called = false;
-      component.deleteTodo
-        .subscribe({
-          next: () => called = true,
-        });
+    it('should show a done todo with dueDate passed', async () => {
+      const dateOvertime = getDateOffset(-1);
+      const dateOvertimeText = getDateString(dateOvertime) as string;
+      const todoDone = Object.assign(new Todo(), { ...todo, status: 'done', dueDate: dateOvertime });
+      const { container } = await render(TodoComponent, {
+        componentProperties: { todo: todoDone },
+      });
 
-      click(fixture, 'button-delete');
-      expect(called).toBeTruthy();
+      expect(screen.getByText(dateOvertimeText)).toBeTruthy();
+      const cardDoneElement = container.querySelector('.card.border-success');
+      expect(cardDoneElement).toBeTruthy();
+      const cardOvertimeElement = container.querySelector('.card.border-danger');
+      expect(cardOvertimeElement).toBeFalsy();
+
+      const duplicateButton = container.querySelector('[data-test-id="button-duplicate"]');
+      expect(duplicateButton).toBeTruthy();
+      expect(duplicateButton?.getAttribute('disabled')).toBe('');
+      const editButton = container.querySelector('[data-test-id="button-edit"]');
+      expect(editButton).toBeTruthy();
+      expect(editButton?.getAttribute('disabled')).toBe('');
+      const deleteButton = container.querySelector('[data-test-id="button-delete"]');
+      expect(deleteButton).toBeTruthy();
+      expect(deleteButton?.getAttribute('disabled')).toBe(null);
+      const statusButton = container.querySelector('[data-test-id="button-status"]');
+      expect(statusButton).toBeFalsy();
     });
 
-    it('emit Output `changeStateTodo` when click on change status button', () => {
-      let called = false;
-      component.changeStateTodo
-        .subscribe({
-          next: () => called = true,
-        });
+  });
 
-      click(fixture, 'button-status');
-      expect(called).toBeTruthy();
+  describe('check outputs', () => {
+    it('duplicate button is clicked', async () => {
+      const duplicateTodoSpy = jest.fn();
+      await render(TodoComponent, {
+        componentProperties: {
+          todo,
+          duplicateTodo: { emit: duplicateTodoSpy } as any,
+        },
+      });
+
+      const duplicateButton = screen.getByTestId('button-duplicate');
+      expect(duplicateButton).toBeTruthy();
+      fireEvent.click(duplicateButton);
+
+      expect(duplicateTodoSpy).toHaveBeenCalled()
+    });
+
+    it('edit button is clicked', async () => {
+      const editTodoSpy = jest.fn();
+      await render(TodoComponent, {
+        componentProperties: {
+          todo,
+          editTodo: { emit: editTodoSpy } as any,
+        },
+      });
+
+      const editButton = screen.getByTestId('button-edit');
+      expect(editButton).toBeTruthy();
+      fireEvent.click(editButton);
+
+      expect(editTodoSpy).toHaveBeenCalled()
+    });
+
+    it('delete button is clicked', async () => {
+      const deleteTodoSpy = jest.fn();
+      await render(TodoComponent, {
+        componentProperties: {
+          todo,
+          deleteTodo: { emit: deleteTodoSpy } as any,
+        },
+      });
+
+      const deleteButton = screen.getByTestId('button-delete');
+      expect(deleteButton).toBeTruthy();
+      fireEvent.click(deleteButton);
+
+      expect(deleteTodoSpy).toHaveBeenCalled()
+    });
+
+    it('change status button is clicked', async () => {
+      const changeStateTodoSpy = jest.fn();
+      await render(TodoComponent, {
+        componentProperties: {
+          todo,
+          changeStateTodo: { emit: changeStateTodoSpy } as any,
+        },
+      });
+
+      const changeStatusButton = screen.getByTestId('button-status');
+      expect(changeStatusButton).toBeTruthy();
+      fireEvent.click(changeStatusButton);
+
+      expect(changeStateTodoSpy).toHaveBeenCalled()
     });
   });
 });
