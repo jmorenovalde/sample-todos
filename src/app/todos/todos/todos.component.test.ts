@@ -7,7 +7,7 @@ import { TodosComponent } from './todos.component';
 import { TodosService } from '../../core/services/todos.service';
 import { Todo } from '../../core/models/todo.model';
 import { listTodos } from '../../core/services/todos.service.test';
-import { click, getDateOffset, getDateString } from '../../core/utils-tests';
+import { click, getDateOffset } from '../../core/utils-tests';
 
 describe('TodosComponent', () => {
   let component: TodosComponent;
